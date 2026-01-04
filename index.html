@@ -1,449 +1,801 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vishal Alpe - Software Developer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Vishal Alpe - Retro Cartoon Dev</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
+        /* RESET & BASE */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+          --black: #000000;
+          --white: #ffffff;
+          --gray-dark: #222222;
+          --gray-light: #f0f0f0;
+          --accent: #ff0000;
+          --shadow-size: 8px;
+          --transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        body {
+          font-family: 'Comic Neue', cursive;
+          background-color: var(--white);
+          color: var(--black);
+          line-height: 1.6;
+          overflow-x: hidden;
+          transition: var(--transition);
+          min-height: 100vh;
+          position: relative;
+        }
+
+        body.dark-mode {
+          background-color: var(--black);
+          color: var(--white);
+        }
+
+        /* CARTOON BACKGROUND ELEMENTS */
+        .cartoon-bg {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: -1;
+          opacity: 0.3;
+        }
+
+        .grid-dots {
+          background-image: radial-gradient(var(--black) 1px, transparent 1px);
+          background-size: 30px 30px;
+        }
+
+        .dark-mode .grid-dots {
+          background-image: radial-gradient(var(--white) 1px, transparent 1px);
+        }
+
+        .speech-bubble {
+          position: absolute;
+          width: 150px;
+          height: 100px;
+          background: var(--white);
+          border: 4px solid var(--black);
+          border-radius: 20px;
+          animation: float 15s infinite linear;
+        }
+
+        .dark-mode .speech-bubble {
+          background: var(--black);
+          border-color: var(--white);
+        }
+
+        .speech-bubble::after {
+          content: '';
+          position: absolute;
+          bottom: -20px;
+          left: 50px;
+          width: 0;
+          height: 0;
+          border: 10px solid transparent;
+          border-top-color: var(--black);
+          border-bottom: 0;
+        }
+
+        .dark-mode .speech-bubble::after {
+          border-top-color: var(--white);
+        }
+
+        .speech-bubble:nth-child(1) {
+          top: 10%;
+          left: 5%;
+          animation-delay: 0s;
+        }
+
+        .speech-bubble:nth-child(2) {
+          top: 30%;
+          right: 8%;
+          animation-delay: 5s;
+          animation-duration: 18s;
+        }
+
+        .speech-bubble:nth-child(3) {
+          bottom: 20%;
+          left: 15%;
+          animation-delay: 10s;
+          animation-duration: 22s;
+        }
+
+        /* TOGGLE SWITCH - MINDBLOWING */
+        .theme-toggle {
+          position: fixed;
+          top: 30px;
+          right: 30px;
+          z-index: 1000;
+          width: 100px;
+          height: 50px;
+          cursor: pointer;
+        }
+
+        .toggle-container {
+          width: 100%;
+          height: 100%;
+          background: var(--black);
+          border-radius: 50px;
+          border: 4px solid var(--black);
+          position: relative;
+          box-shadow:
+            0 0 0 4px var(--white),
+            inset 0 0 10px rgba(0,0,0,0.3);
+          transition: var(--transition);
+          overflow: hidden;
+        }
+
+        .dark-mode .toggle-container {
+          background: var(--white);
+          border-color: var(--white);
+          box-shadow:
+            0 0 0 4px var(--black),
+            inset 0 0 10px rgba(255,255,255,0.3);
+        }
+
+        .toggle-slider {
+          position: absolute;
+          width: 40px;
+          height: 40px;
+          background: var(--white);
+          border-radius: 50%;
+          top: 3px;
+          left: 5px;
+          transition: var(--transition);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 24px;
+          box-shadow:
+            0 0 10px rgba(0,0,0,0.3),
+            inset 0 0 5px rgba(0,0,0,0.2);
+        }
+
+        .dark-mode .toggle-slider {
+          left: calc(100% - 45px);
+          background: var(--black);
+          box-shadow:
+            0 0 10px rgba(255,255,255,0.3),
+            inset 0 0 5px rgba(255,255,255,0.2);
+        }
+
+        .toggle-sun { color: #ffcc00; }
+        .toggle-moon { color: #ccccff; }
+
+        /* ANIMATED TITLE */
+        .title-container {
+          text-align: center;
+          padding: 40px 20px 30px;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .title-text {
+          font-family: 'Bangers', cursive;
+          font-size: 4rem;
+          letter-spacing: 3px;
+          text-transform: uppercase;
+          position: relative;
+          display: inline-block;
+          margin-bottom: 10px;
+          text-shadow:
+            var(--shadow-size) var(--shadow-size) 0 var(--black),
+            0 0 20px rgba(0,0,0,0.1);
+          animation: titlePop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+          opacity: 0;
+          transform: translateY(50px);
+        }
+
+        .dark-mode .title-text {
+          text-shadow:
+            var(--shadow-size) var(--shadow-size) 0 var(--white),
+            0 0 20px rgba(255,255,255,0.1);
+        }
+
+        .title-text::after {
+          content: '';
+          position: absolute;
+          bottom: -10px;
+          left: 0;
+          width: 100%;
+          height: 6px;
+          background: var(--black);
+          border-radius: 3px;
+          animation: stretch 1s 0.5s forwards;
+          transform: scaleX(0);
+          transform-origin: left;
+        }
+
+        .dark-mode .title-text::after {
+          background: var(--white);
+        }
+
+        .subtitle {
+          font-family: 'Press Start 2P', cursive;
+          font-size: 0.9rem;
+          margin-top: 20px;
+          opacity: 0;
+          animation: fadeIn 1s 1s forwards;
+          text-shadow: 2px 2px 0 var(--black);
+        }
+
+        .dark-mode .subtitle {
+          text-shadow: 2px 2px 0 var(--white);
+        }
+
+        /* CARTOON CARDS */
+        .main-container {
+          max-width: 1000px;
+          margin: 0 auto;
+          padding: 0 20px 60px;
+        }
+
+        .section-title {
+          font-family: 'Bangers', cursive;
+          font-size: 2.5rem;
+          letter-spacing: 2px;
+          margin: 40px 0 20px;
+          position: relative;
+          display: inline-block;
+          padding-right: 20px;
+        }
+
+        .section-title::after {
+          content: '';
+          position: absolute;
+          right: 0;
+          top: 50%;
+          width: 30px;
+          height: 30px;
+          background: var(--accent);
+          border-radius: 50%;
+          transform: translateY(-50%);
+          animation: pulse 2s infinite;
+        }
+
+        .project-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          gap: 30px;
+          margin-top: 20px;
+        }
+
+        .cartoon-card {
+          background: var(--white);
+          border: 4px solid var(--black);
+          border-radius: 0;
+          padding: 25px;
+          position: relative;
+          transform-style: preserve-3d;
+          transition: var(--transition);
+          box-shadow:
+            var(--shadow-size) var(--shadow-size) 0 var(--black),
+            inset 0 0 0 0 var(--accent);
+          overflow: hidden;
+        }
+
+        .dark-mode .cartoon-card {
+          background: var(--black);
+          border-color: var(--white);
+          box-shadow:
+            var(--shadow-size) var(--shadow-size) 0 var(--white),
+            inset 0 0 0 0 var(--accent);
+        }
+
+        .cartoon-card:hover {
+          transform: translate(calc(var(--shadow-size) * -0.3), calc(var(--shadow-size) * -0.3));
+          box-shadow:
+            calc(var(--shadow-size) * 1.5) calc(var(--shadow-size) * 1.5) 0 var(--black),
+            inset 0 0 0 3px var(--accent);
+        }
+
+        .dark-mode .cartoon-card:hover {
+          box-shadow:
+            calc(var(--shadow-size) * 1.5) calc(var(--shadow-size) * 1.5) 0 var(--white),
+            inset 0 0 0 3px var(--accent);
+        }
+
+        .card-title {
+          font-family: 'Bangers', cursive;
+          font-size: 1.8rem;
+          margin-bottom: 10px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .card-link {
+          font-size: 1.5rem;
+          text-decoration: none;
+          color: var(--black);
+          transition: var(--transition);
+        }
+
+        .dark-mode .card-link {
+          color: var(--white);
+        }
+
+        .card-link:hover {
+          color: var(--accent);
+          transform: scale(1.2) rotate(10deg);
+        }
+
+        .card-tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin-top: 15px;
+        }
+
+        .tag {
+          font-family: 'Press Start 2P', cursive;
+          font-size: 0.6rem;
+          padding: 5px 10px;
+          background: var(--black);
+          color: var(--white);
+          border-radius: 0;
+          text-transform: uppercase;
+        }
+
+        .dark-mode .tag {
+          background: var(--white);
+          color: var(--black);
+        }
+
+        /* SKILLS SECTION */
+        .skills-container {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+          margin-top: 20px;
+        }
+
+        .skill-category {
+          flex: 1;
+          min-width: 200px;
+          background: var(--white);
+          border: 4px solid var(--black);
+          padding: 20px;
+          box-shadow: 5px 5px 0 var(--black);
+        }
+
+        .dark-mode .skill-category {
+          background: var(--black);
+          border-color: var(--white);
+          box-shadow: 5px 5px 0 var(--white);
+        }
+
+        .skill-category h3 {
+          font-family: 'Bangers', cursive;
+          font-size: 1.5rem;
+          margin-bottom: 15px;
+          text-align: center;
+        }
+
+        .skill-item {
+          padding: 8px 0;
+          border-bottom: 2px dotted var(--black);
+          font-weight: bold;
+          position: relative;
+          padding-left: 25px;
+        }
+
+        .dark-mode .skill-item {
+          border-bottom-color: var(--white);
+        }
+
+        .skill-item::before {
+          content: '▸';
+          position: absolute;
+          left: 0;
+          color: var(--accent);
+        }
+
+        /* CONTACT SECTION */
+        .contact-container {
+          background: var(--white);
+          border: 8px double var(--black);
+          padding: 30px;
+          margin-top: 30px;
+          text-align: center;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .dark-mode .contact-container {
+          background: var(--black);
+          border-color: var(--white);
+        }
+
+        .contact-container::before {
+          content: '!!!';
+          position: absolute;
+          top: -20px;
+          right: 20px;
+          font-family: 'Bangers', cursive;
+          font-size: 3rem;
+          color: var(--accent);
+          transform: rotate(20deg);
+          animation: bounce 1s infinite alternate;
+        }
+
+        .contact-links {
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          gap: 30px;
+          margin-top: 20px;
+        }
+
+        .contact-link {
+          font-family: 'Press Start 2P', cursive;
+          font-size: 0.8rem;
+          color: var(--black);
+          text-decoration: none;
+          padding: 10px 20px;
+          border: 3px solid var(--black);
+          background: var(--white);
+          position: relative;
+          transition: var(--transition);
+        }
+
+        .dark-mode .contact-link {
+          color: var(--white);
+          border-color: var(--white);
+          background: var(--black);
+        }
+
+        .contact-link:hover {
+          background: var(--accent);
+          color: var(--white);
+          transform: translateY(-5px);
+          border-color: var(--accent);
+        }
+
+        /* ANIMATIONS */
         @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0px); }
+          0%, 100% { transform: translateY(0) rotate(0deg); }
+          25% { transform: translateY(-20px) rotate(5deg); }
+          50% { transform: translateY(0) rotate(0deg); }
+          75% { transform: translateY(20px) rotate(-5deg); }
         }
 
-        .gradient-text {
-            background: linear-gradient(45deg, #ec4899, #8b5cf6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        @keyframes titlePop {
+          0% { opacity: 0; transform: translateY(50px) scale(0.8); }
+          100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .section-hidden {
-            opacity: 0;
-            transform: translateY(8rem);
+        @keyframes stretch {
+          0% { transform: scaleX(0); }
+          100% { transform: scaleX(1); }
         }
 
-        .section {
-            transition: transform 1s, opacity 1s;
+        @keyframes fadeIn {
+          0% { opacity: 0; }
+          100% { opacity: 1; }
         }
 
-        .floating {
-            animation: float 6s ease-in-out infinite;
+        @keyframes pulse {
+          0%, 100% { transform: translateY(-50%) scale(1); opacity: 1; }
+          50% { transform: translateY(-50%) scale(1.2); opacity: 0.7; }
         }
 
-        .info-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(192, 132, 252, 0.2);
+        @keyframes bounce {
+          0% { transform: rotate(20deg) translateY(0); }
+          100% { transform: rotate(20deg) translateY(-10px); }
+        }
+
+        /* FOOTER */
+        footer {
+          text-align: center;
+          padding: 30px 20px;
+          border-top: 4px dashed var(--black);
+          margin-top: 40px;
+          font-family: 'Press Start 2P', cursive;
+          font-size: 0.7rem;
+        }
+
+        .dark-mode footer {
+          border-top-color: var(--white);
+        }
+
+        .year {
+          color: var(--accent);
+          animation: pulse 1.5s infinite;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+          .title-text { font-size: 2.5rem; }
+          .section-title { font-size: 2rem; }
+          .project-grid { grid-template-columns: 1fr; }
+          .theme-toggle { top: 20px; right: 20px; width: 80px; height: 40px; }
+          .toggle-slider { width: 32px; height: 32px; font-size: 18px; }
+        }
+
+        /* SPECIAL EFFECTS */
+        .screen-flicker {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          z-index: 9999;
+          background: transparent;
+          animation: flicker 0.1s infinite;
+          opacity: 0;
+          mix-blend-mode: difference;
+        }
+
+        @keyframes flicker {
+          0%, 100% { opacity: 0; }
+          50% { opacity: 0.05; }
+        }
+
+        .mode-change-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: var(--accent);
+          z-index: 9998;
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.3s;
         }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-300">
-    <!-- Navigation -->
-    <nav class="fixed w-full bg-slate-900/80 backdrop-blur-md z-50">
-        <div class="container mx-auto px-6 py-4">
-            <div class="flex items-center justify-between">
-                <a href="#" class="text-xl font-bold text-purple-400">Vishal Alpe</a>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#education" class="hover:text-purple-400 transition-colors">Education</a>
-                    <a href="#skills" class="hover:text-purple-400 transition-colors">Skills</a>
-                    <a href="#projects" class="hover:text-purple-400 transition-colors">Projects</a>
-                    <a href="#contact" class="hover:text-purple-400 transition-colors">Contact</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+<body>
+<!-- MODE CHANGE OVERLAY -->
+<div class="mode-change-overlay" id="modeOverlay"></div>
 
-    <!-- Hero Section -->
-    <section class="min-h-screen pt-32 relative overflow-hidden">
-        <div class="absolute inset-0">
-            <div class="relative h-full w-full bg-slate-950">
-                <div class="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))] floating"></div>
-                <div class="absolute bottom-0 right-[-20%] top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))] floating" style="animation-delay: 2s"></div>
-            </div>
-        </div>
+<!-- SCREEN FLICKER EFFECT -->
+<div class="screen-flicker"></div>
 
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="text-center">
-                <h1 class="text-5xl md:text-7xl font-bold bg-gradient-to-r from-purple-400 to-pink-300 bg-clip-text text-transparent mb-4">
-                    Vishal Alpe
-                </h1>
+<!-- CARTOON BACKGROUND -->
+<div class="cartoon-bg grid-dots"></div>
+<div class="speech-bubble"></div>
+<div class="speech-bubble"></div>
+<div class="speech-bubble"></div>
 
-                <!-- Professional Summary -->
-                <div class="info-card p-6 rounded-2xl max-w-2xl mx-auto mb-8">
-                    <p class="text-lg md:text-xl text-slate-300 leading-relaxed">
-                        <span class="gradient-text font-semibold">Boundary-pushing developer</span> passionate about 
-                        crafting elegant solutions. Not confined to tech stacks but driven by 
-                        innovative problem-solving and scalable system design.
-                    </p>
-                </div>
-
-                <!-- Personal Info Card -->
-                <div class="info-card p-6 rounded-2xl max-w-md mx-auto mb-8">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-center space-x-4">
-                            <i class="fas fa-envelope text-purple-400"></i>
-                            <a href="mailto:vishalalpe20@gmail.com" class="hover:text-purple-400">vishalalpe20@gmail.com</a>
-                        </div>
-                        <div class="flex items-center justify-center space-x-4">
-                            <i class="fas fa-phone text-purple-400"></i>
-                            <span>+91 8010811908</span>
-                        </div>
-                        <div class="flex justify-center space-x-4 pt-4">
-                            <a href="https://linkedin.com/in/vishal-alpe-51aba8221" target="_blank" class="p-2 rounded-full bg-slate-800 hover:bg-purple-500 transition-colors">
-                                <i class="fab fa-linkedin"></i>
-                            </a>
-                            <a href="https://github.com/Vish-001" target="_blank" class="p-2 rounded-full bg-slate-800 hover:bg-purple-500 transition-colors">
-                                <i class="fab fa-github"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CV Download -->
-                <div class="mt-8">
-                    <a href="https://drive.google.com/file/d/1-Vh99FobwP4xj-fZxqa1RG1VpzwzRoDd/view?usp=sharing" download 
-                        class="inline-block bg-gradient-to-r from-purple-600 to-pink-500 text-white px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-purple-500/30 transition-all">
-                        <i class="fas fa-download mr-2"></i>Download CV
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="py-20 bg-slate-900 section">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-12 gradient-text">Featured Projects</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <!-- Chem-E-Cal Lab -->
-                <div class="bg-slate-800 rounded-xl p-6 hover:transform hover:-translate-y-2 transition-all">
-                    <div class="flex justify-between items-start mb-4">
-                        <h3 class="text-xl font-semibold">Chem-E-Cal Lab</h3>
-                        <a href="https://finalchemproject.onrender.com/" class="text-purple-400 hover:text-purple-300">
-                            <i class="fas fa-external-link-alt"></i>
-                        </a>
-                    </div>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="bg-slate-700 text-purple-300 text-sm px-2 py-1 rounded">Java</span>
-                        <span class="bg-slate-700 text-purple-300 text-sm px-2 py-1 rounded">Spring Boot</span>
-                        <span class="bg-slate-700 text-purple-300 text-sm px-2 py-1 rounded">PostgreSQL</span>
-                    </div>
-                    <ul class="list-disc list-inside text-slate-400 space-y-2">
-                        <li>Created a virtual chemistry lab to solve real-world challenges: costly equipment, safety risks (e.g., spills), and access gaps for remote schools. Students simulate explosive reactions safely via drag-and-drop tools, seeing instant results like color changes.</li>
-                        <li>Scaled to 1,000+ reactions (basic to advanced) with zero lag on outdated devices, while enabling global collaboration—e.g., a visually impaired student uses audio cues to “mix” chemicals.</li>
-                        <li>Outcome: Cuts lab costs by thousands, speeds up lessons by 40%, and brings hands-on STEM to underserved students.</li>
-                    </ul>
-                </div>
-
-                <!-- GraphFlow -->
-                <div class="bg-slate-800 rounded-xl p-6 hover:transform hover:-translate-y-2 transition-all">
-                    <div class="flex justify-between items-start mb-4">
-                        <h3 class="text-xl font-semibold">GraphFlow</h3>
-                        <a href="https://vish-001.github.io/AlgoVis/" class="text-purple-400 hover:text-purple-300">
-                            <i class="fas fa-external-link-alt"></i>
-                        </a>
-                    </div>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="bg-slate-700 text-purple-300 text-sm px-2 py-1 rounded">JavaScript</span>
-                        <span class="bg-slate-700 text-purple-300 text-sm px-2 py-1 rounded">DataStructures</span>
-                        <span class="bg-slate-700 text-purple-300 text-sm px-2 py-1 rounded">Algorithm</span>
-                    </div>
-                    <ul class="list-disc list-inside text-slate-400 space-y-2">
-                        <li>GraphFlow: Where Algorithms Race, Maze, and Optimize! 🏁🧩</li>
-                        <li>Command 15+ algorithms (Bidirectional A*, Prim’s MST, DFS) to conquer walls, weights, and labyrinthine grids—live!</li>
-                        <li>Dissect every decision: watch greedy heuristics clash with optimal paths in vivid detail.</li>
-                        <li>From classroom theory to interactive mastery—no code, just pure algorithmic adrenaline! 🔥🔍</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Education Section -->
-    <section id="education" class="py-20 bg-slate-900 section">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-12 gradient-text">Education</h2>
-            <div class="max-w-3xl mx-auto">
-                <div class="bg-slate-800 rounded-xl p-8">
-                    <h3 class="text-xl font-semibold text-purple-400">Sinhgad College of Engineering, Pune</h3>
-                    <div class="mt-4">
-                        <p class="text-lg">B.Tech in Computer Science & Engineering</p>
-                        <p class="text-lg font-semibold text-purple-300 mt-2">CGPA: 8.27</p>
-                    </div>
-                    
-                    <div class="mt-6">
-                        <h4 class="text-lg font-semibold text-purple-400 mb-4">Core Coursework</h4>
-                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                            <span class="bg-slate-700 text-purple-300 text-sm px-3 py-2 rounded">Data Structures & Algorithms</span>
-                            <span class="bg-slate-700 text-purple-300 text-sm px-3 py-2 rounded">Operating Systems</span>
-                            <span class="bg-slate-700 text-purple-300 text-sm px-3 py-2 rounded">Database Management</span>
-                            <span class="bg-slate-700 text-purple-300 text-sm px-3 py-2 rounded">Computer Networks</span>
-                            <span class="bg-slate-700 text-purple-300 text-sm px-3 py-2 rounded">OOPS Concepts</span>
-                            <span class="bg-slate-700 text-purple-300 text-sm px-3 py-2 rounded">Software Engineering</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Technical Skills Section -->
-    <div class="container mx-auto px-6 py-20">
-        <h2 class="text-3xl font-bold text-center mb-12 gradient-text">Technical Expertise</h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Languages -->
-            <div class="bg-slate-800 p-6 rounded-xl">
-                <h3 class="text-lg font-semibold mb-4 text-purple-400">Languages</h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" class="w-8 h-8" alt="Java">
-                        <span>Java</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" class="w-8 h-8" alt="C++">
-                        <span>C++</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" class="w-8 h-8" alt="Python">
-                        <span>Python</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" class="w-8 h-8" alt="JavaScript">
-                        <span>JavaScript</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" class="w-8 h-8" alt="Shell">
-                        <span>Shell Scripting</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg" class="w-8 h-8" alt="SQL">
-                        <span>SQL</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Frameworks & Libraries -->
-            <div class="bg-slate-800 p-6 rounded-xl">
-                <h3 class="text-lg font-semibold mb-4 text-purple-400">Frameworks & Libraries</h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" class="w-8 h-8" alt="Spring">
-                        <span>Spring Boot</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/hibernate/hibernate-original.svg" class="w-8 h-8" alt="Hibernate">
-                        <span>Hibernate</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/junit/junit-original.svg" class="w-8 h-8" alt="JUnit">
-                        <span>JUnit</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/angularjs/angularjs-original.svg" class="w-8 h-8" alt="Angular">
-                        <span>AngularJS</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <i class="fas fa-project-diagram text-purple-400 text-xl"></i>
-                        <span>MyBatis</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <i class="fas fa-cloud text-purple-400 text-xl"></i>
-                        <span>REST API</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Databases -->
-            <div class="bg-slate-800 p-6 rounded-xl">
-                <h3 class="text-lg font-semibold mb-4 text-purple-400">Databases</h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" class="w-8 h-8" alt="PostgreSQL">
-                        <span>PostgreSQL</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" class="w-8 h-8" alt="MySQL">
-                        <span>MySQL</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" class="w-8 h-8" alt="MongoDB">
-                        <span>NoSQL</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oracle/oracle-original.svg" class="w-8 h-8" alt="Oracle">
-                        <span>Oracle</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- DevOps & Tools -->
-            <div class="bg-slate-800 p-6 rounded-xl">
-                <h3 class="text-lg font-semibold mb-4 text-purple-400">DevOps & Tools</h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" class="w-8 h-8" alt="Docker">
-                        <span>Docker</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg" class="w-8 h-8" alt="Kubernetes">
-                        <span>Kubernetes</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jenkins/jenkins-original.svg" class="w-8 h-8" alt="Jenkins">
-                        <span>Jenkins</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/maven/maven-original.svg" class="w-8 h-8" alt="Maven">
-                        <span>Maven</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" class="w-8 h-8" alt="Git">
-                        <span>Git</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postman/postman-original.svg" class="w-8 h-8" alt="Postman">
-                        <span>Postman</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Practices -->
-            <div class="bg-slate-800 p-6 rounded-xl">
-                <h3 class="text-lg font-semibold mb-4 text-purple-400">Practices</h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <i class="fas fa-code-branch text-purple-400 text-xl"></i>
-                        <span>Agile</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <i class="fas fa-vial text-purple-400 text-xl"></i>
-                        <span>TDD</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <i class="fas fa-microchip text-purple-400 text-xl"></i>
-                        <span>Microservices</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <i class="fas fa-redo text-purple-400 text-xl"></i>
-                        <span>Code Refactoring</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <i class="fas fa-bug text-purple-400 text-xl"></i>
-                        <span>Debugging</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <i class="fas fa-cube text-purple-400 text-xl"></i>
-                        <span>OOP Design</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- UI Technologies -->
-            <div class="bg-slate-800 p-6 rounded-xl">
-                <h3 class="text-lg font-semibold mb-4 text-purple-400">UI Technologies</h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" class="w-8 h-8" alt="HTML">
-                        <span>HTML</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" class="w-8 h-8" alt="CSS">
-                        <span>CSS</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <i class="fas fa-diagram-project text-purple-400 text-xl"></i>
-                        <span>Data Structures</span>
-                    </div>
-                    <div class="flex items-center space-x-3 p-3 hover:bg-slate-700 rounded-lg transition-colors">
-                        <i class="fas fa-sitemap text-purple-400 text-xl"></i>
-                        <span>Algorithms</span>
-                    </div>
-                </div>
-            </div>
+<!-- THEME TOGGLE -->
+<div class="theme-toggle" id="themeToggle">
+    <div class="toggle-container">
+        <div class="toggle-slider">
+            <span class="toggle-sun">☀️</span>
+            <span class="toggle-moon" style="display: none;">🌙</span>
         </div>
     </div>
+</div>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-20 section">
-        <div class="container mx-auto px-6">
-            <div class="max-w-2xl mx-auto bg-slate-800 rounded-xl p-8">
-                <h2 class="text-3xl font-bold text-center mb-8 gradient-text">Get in Touch</h2>
-                <form 
-                    class="space-y-6" 
-                    action="https://formspree.io/f/xpwpznjk" 
-                    method="POST"
-                >
-                    <div>
-                        <input 
-                            type="text" 
-                            name="name"
-                            placeholder="Your Name" 
-                            class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                            required
-                        >
-                    </div>
-                    <div>
-                        <input 
-                            type="email" 
-                            name="email"
-                            placeholder="Your Email" 
-                            class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                            required
-                        >
-                    </div>
-                    <div>
-                        <textarea 
-                            rows="4" 
-                            name="message"
-                            placeholder="Your Message"
-                            class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 focus:outline-none focus:border-purple-500"
-                            required
-                        ></textarea>
-                    </div>
-                    <input type="hidden" name="_subject" value="New message from portfolio!">
-                    <button 
-                        type="submit" 
-                        class="w-full bg-purple-600 text-white py-2 px-6 rounded-lg hover:bg-purple-700 transition-colors"
-                    >
-                        Send Message <i class="fas fa-paper-plane ml-2"></i>
-                    </button>
-                </form>
+<!-- TITLE SECTION-->
+<div class="title-container">
+    <h1 class="title-text">VISHAL ALPE</h1>
+    <p class="subtitle">BACKEND DEV WITH CARTOON POWER!</p>
+</div>
+
+<!-- MAIN CONTENT -->
+<main class="main-container">
+    <!-- PROJECTS -->
+    <section id="projects">
+        <h2 class="section-title">PROJECTS</h2>
+        <div class="project-grid">
+            <!-- ShuttleShadowAI -->
+            <article class="cartoon-card">
+                <h3 class="card-title">
+                    ShuttleShadowAI
+                    <a href="https://shuttleshadowai.onrender.com/login" class="card-link" title="View Project">🕹️</a>
+                </h3>
+                <p>AI-driven badminton training platform. Tracks your moves like a cartoon spy!</p>
+                <div class="card-tags">
+                    <span class="tag">Java</span>
+                    <span class="tag">Spring Boot</span>
+                    <span class="tag">AI</span>
+                    <span class="tag">Analytics</span>
+                </div>
+            </article>
+
+            <!-- ShelfSenseAI -->
+            <article class="cartoon-card">
+                <h3 class="card-title">
+                    ShelfSenseAI
+                    <a href="https://shelfsenseai.onrender.com/" target="_blank" class="card-link" title="Live Demo">🎯</a>
+                </h3>
+                <p>Smart pantry that knows when your food is about to go bad. ZAP! Waste reduced!</p>
+                <div class="card-tags">
+                    <span class="tag">Java</span>
+                    <span class="tag">Spring</span>
+                    <span class="tag">NLP</span>
+                    <span class="tag">Dashboard</span>
+                </div>
+            </article>
+
+            <!-- GraphFlow -->
+            <article class="cartoon-card">
+                <h3 class="card-title">
+                    GraphFlow
+                    <a href="https://vish-001.github.io/AlgoVis/" target="_blank" class="card-link" title="Live Demo">🌀</a>
+                </h3>
+                <p>Watch algorithms come to life! Visual magic for graph theory.</p>
+                <div class="card-tags">
+                    <span class="tag">JavaScript</span>
+                    <span class="tag">Algorithms</span>
+                    <span class="tag">Visual</span>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+        <h2 class="section-title">SKILLS</h2>
+        <div class="skills-container">
+            <div class="skill-category">
+                <h3>CODE LANGUAGES</h3>
+                <div class="skill-item">Java</div>
+                <div class="skill-item">C++</div>
+                <div class="skill-item">Python</div>
+                <div class="skill-item">JavaScript</div>
+            </div>
+
+            <div class="skill-category">
+                <h3>BACKEND MAGIC</h3>
+                <div class="skill-item">Spring Boot</div>
+                <div class="skill-item">REST APIs</div>
+                <div class="skill-item">Microservices</div>
+                <div class="skill-item">Hibernate</div>
+            </div>
+
+            <div class="skill-category">
+                <h3>TOOLS & TECH</h3>
+                <div class="skill-item">Docker</div>
+                <div class="skill-item">PostgreSQL</div>
+                <div class="skill-item">Git</div>
+                <div class="skill-item">AWS</div>
             </div>
         </div>
     </section>
 
-    <script>
-        // Scroll Reveal
-        const allSections = document.querySelectorAll('.section');
-        const revealSection = (entries, observer) => {
-            const [entry] = entries;
-            if(!entry.isIntersecting) return;
-            entry.target.classList.remove('section-hidden');
-            observer.unobserve(entry.target);
-        };
+    <!-- CONTACT -->
+    <section id="contact">
+        <div class="contact-container">
+            <h2 class="section-title">LET'S CREATE TOGETHER!</h2>
+            <p>Looking for backend roles, internships, or just want to talk about cool tech? Send a smoke signal!</p>
 
-        const sectionObserver = new IntersectionObserver(revealSection, {
-            root: null,
-            threshold: 0.15,
-        });
+            <div class="contact-links">
+                <a href="mailto:vishalalpe20@gmail.com" class="contact-link">📧 EMAIL</a>
+                <a href="https://github.com/Vish-001" target="_blank" class="contact-link">💻 GITHUB</a>
+                <a href="https://drive.google.com/file/d/1NHUJRIQVofKAh2ur2o1PmRAv2t1h230D/view?usp=sharing" target="_blank" class="contact-link">📄 RESUME</a>
+                <a href="https://linkedin.com/in/vishal-alpe-51aba8221" target="_blank" class="contact-link">👔 LINKEDIN</a>
+            </div>
+        </div>
+    </section>
+</main>
 
-        allSections.forEach(section => {
-            section.classList.add('section-hidden');
-            sectionObserver.observe(section);
-        });
+<footer>
+    <p>© <span class="year" id="currentYear"></span> VISHAL ALPE - CARTOON CODING MODE ACTIVATED!</p>
+    <p style="margin-top: 10px; font-size: 0.6rem;">CLICK THE TOGGLE FOR A SURPRISE!</p>
+</footer>
 
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
+<script>
+    // Set current year
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Theme toggle functionality
+    const themeToggle = document.getElementById('themeToggle');
+    const modeOverlay = document.getElementById('modeOverlay');
+    const body = document.body;
+    const toggleSun = document.querySelector('.toggle-sun');
+    const toggleMoon = document.querySelector('.toggle-moon');
+
+    // Check for saved theme or prefer-color-scheme
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+    const savedTheme = localStorage.getItem('theme');
+
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark.matches)) {
+      body.classList.add('dark-mode');
+      toggleSun.style.display = 'none';
+      toggleMoon.style.display = 'block';
+    } else {
+      toggleSun.style.display = 'block';
+      toggleMoon.style.display = 'none';
+    }
+
+    // Toggle theme with animation
+    themeToggle.addEventListener('click', () => {
+      // Show overlay animation
+      modeOverlay.style.opacity = '1';
+      setTimeout(() => {
+        modeOverlay.style.opacity = '0';
+      }, 300);
+
+      // Toggle theme
+      body.classList.toggle('dark-mode');
+
+      // Update toggle icons
+      if (body.classList.contains('dark-mode')) {
+        toggleSun.style.display = 'none';
+        toggleMoon.style.display = 'block';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        toggleSun.style.display = 'block';
+        toggleMoon.style.display = 'none';
+        localStorage.setItem('theme', 'light');
+      }
+
+      // Add comic "POW!" effect
+      const pow = document.createElement('div');
+      pow.style.position = 'fixed';
+      pow.style.top = '50%';
+      pow.style.left = '50%';
+      pow.style.transform = 'translate(-50%, -50%)';
+      pow.style.fontFamily = "'Bangers', cursive";
+      pow.style.fontSize = '8rem';
+      pow.style.color = 'var(--accent)';
+      pow.style.zIndex = '10000';
+      pow.style.pointerEvents = 'none';
+      pow.style.opacity = '0';
+      pow.style.textShadow = '10px 10px 0 var(--black)';
+      pow.textContent = body.classList.contains('dark-mode') ? 'NIGHT!' : 'DAY!';
+
+      if (body.classList.contains('dark-mode')) {
+        pow.style.textShadow = '10px 10px 0 var(--white)';
+      }
+
+      document.body.appendChild(pow);
+
+      // Animation for POW effect
+      const keyframes = [
+        { opacity: 0, transform: 'translate(-50%, -50%) scale(0.5) rotate(-30deg)' },
+        { opacity: 1, transform: 'translate(-50%, -50%) scale(1.2) rotate(10deg)' },
+        { opacity: 0, transform: 'translate(-50%, -50%) scale(0.8) rotate(30deg)' }
+      ];
+
+      pow.animate(keyframes, {
+        duration: 800,
+        easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+      });
+
+      setTimeout(() => {
+        document.body.removeChild(pow);
+      }, 800);
+    });
+
+    // Add hover effect to cards
+    document.querySelectorAll('.cartoon-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.style.transform = `translate(calc(var(--shadow-size) * -0.3), calc(var(--shadow-size) * -0.3))`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translate(0, 0)';
+      });
+    });
+
+    // Add "BOING" sound effect on toggle (simulated with console)
+    themeToggle.addEventListener('click', () => {
+      console.log("BOING! Theme toggled!");
+    });
+
+    // Random screen flicker for cartoon effect
+    setInterval(() => {
+      const flicker = document.querySelector('.screen-flicker');
+      flicker.style.animation = 'none';
+      setTimeout(() => {
+        flicker.style.animation = 'flicker 0.1s infinite';
+      }, 10);
+    }, 5000);
+</script>
 </body>
 </html>
